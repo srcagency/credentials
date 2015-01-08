@@ -1,53 +1,44 @@
 {
-  "name": "credential",
-  "version": "0.2.5",
-  "description": "Easy password hashing and verification in Node. Protects against brute force, rainbow tables, and timing attacks.",
-  "main": "credential.js",
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {
-    "mout": "~0.6.0"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.2",
-    "tape": "~1.0.4"
-  },
-  "scripts": {
-    "test": "node test/credential-test.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:dilvie/credential.git"
-  },
-  "keywords": [
-    "password",
-    "passwords",
-    "salt",
-    "rainbow",
-    "table",
-    "brute",
-    "force",
-    "security",
-    "login",
-    "auth",
-    "authorization",
-    "sign",
-    "in",
-    "log",
-    "in",
-    "key",
-    "stretching",
-    "PBKDF2",
-    "hash",
-    "password",
-    "hash"
-  ],
-  "author": "Eric Elliott",
-  "license": "MIT",
-  "readmeFilename": "README.md",
-  "bugs": {
-    "url": "https://github.com/dilvie/credential/issues"
-  }
+	"name": "credential",
+	"version": "0.2.5",
+	"description": "Easy password hashing and verification in Node. Protects against brute force, rainbow tables, and timing attacks.",
+	"main": "src",
+	"dependencies": {
+		"extend": "~2.0.0"
+	},
+	"devDependencies": {
+		"tape": "^3.0.3"
+	},
+	"scripts": {
+		"test": "node test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:ericelliott/credential.git"
+	},
+	"keywords": [
+		"password",
+		"passwords",
+		"salt",
+		"rainbow",
+		"table",
+		"brute",
+		"force",
+		"security",
+		"login",
+		"auth",
+		"authorization",
+		"sign",
+		"in",
+		"log",
+		"in",
+		"key",
+		"stretching",
+		"PBKDF2",
+		"hash",
+		"password",
+		"hash"
+	],
+	"author": "Eric Elliott",
+	"license": "MIT"
 }
