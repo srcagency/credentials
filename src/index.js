@@ -1,7 +1,6 @@
 'use strict';
 
 var extend = require('extend');
-var hashMethods = require('./hashMethods');
 var hash = require('./hash');
 var verify = require('./verify');
 
