@@ -10,8 +10,6 @@ test('options', function( t ){
 	pw.hash('foo', function( err, hash ){
 		var defaultIterations = JSON.parse(hash).iterations;
 
-		console.log(defaultIterations, work);
-
 		pw.configure({
 			work: work,
 			keyLength: keyLength
