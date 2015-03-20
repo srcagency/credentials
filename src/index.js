@@ -1,6 +1,7 @@
 'use strict';
 
 var extend = require('extend');
+var Promise = require('bluebird');
 var hash = require('./hash');
 var verify = require('./verify');
 
@@ -24,27 +25,29 @@ extend(Credential.prototype, {
 		var keyLength = this.keyLength;
 		var n = iterations(this.work);
 
-		if (typeof (password) !== 'string' || password.length === 0)
-			return cb(new Error('Password must be a non-empty string.'));
+		Promise.try(function(){
+			if (typeof (password) !== 'string' || password.length === 0)
+				throw new Error('Password must be a non-empty string.');
 
-		return hash(hashMethod, password, n, keyLength, function( err, hash ){
-			if (err)
-				return cb(err);
-
-			cb(null, JSON.stringify(hash));
-		});
+			return hash(hashMethod, password, n, keyLength)
+				.then(JSON.stringify);
+		})
+			.nodeify(cb);
 	},
 
 	verify: function( hash, input, cb ){
 		var stored = parseHash(hash);
 
-		if (typeof input !== 'string' || input.length === 0)
-			return cb(new Error('Input password must be a non-empty string.'));
+		Promise.try(function(){
+			if (typeof input !== 'string' || input.length === 0)
+				throw new Error('Input password must be a non-empty string.');
 
-		if (!stored.hashMethod)
-			return cb(new Error('Couldn\'t parse stored hash.'));
+			if (!stored.hashMethod)
+				throw new Error('Couldn\'t parse stored hash.');
 
-		verify(stored, input, cb);
+			return verify(stored, input);
+		})
+			.nodeify(cb);
 	},
 
 	expired: function( hash, days ){

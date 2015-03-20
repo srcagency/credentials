@@ -1,20 +1,20 @@
 'use strict';
 
 var constantEquals = require('scmp');
+var Promise = require('bluebird');
 var hashMethods = require('./hashMethods');
 
 module.exports = verify;
 
-function verify( storedhash, input, cb ){
+function verify( storedhash, input ){
 	var hashMethod = hashMethods[storedhash.hashMethod];
 	var keyLength = storedhash.keyLength;
 	var iterations = storedhash.iterations;
 	var salt = storedhash.salt;
 
-	hashMethod(input, salt, iterations, keyLength, function( err, hash ){
-		if (err)
-			return cb(err);
+	var hash = hashMethod(input, salt, iterations, keyLength);
 
-		cb(null, constantEquals(hash, storedhash.hash));
-	});
+	return Promise
+		.join(hash, storedhash.hash)
+		.spread(constantEquals);
 }

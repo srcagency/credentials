@@ -5,7 +5,8 @@
 	"main": "src",
 	"dependencies": {
 		"extend": "~2.0.0",
-		"scmp": "^1.0.0"
+		"scmp": "^1.0.0",
+		"bluebird": "^2.9.14"
 	},
 	"devDependencies": {
 		"tape": "^3.0.3"

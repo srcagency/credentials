@@ -1,16 +1,14 @@
 'use strict';
 
-var crypto = require('crypto');
+var Promise = require('bluebird');
+var crypto = Promise.promisifyAll(require('crypto'));
 
 module.exports = {
 	pbkdf2: pbkdf2,
 };
 
-function pbkdf2( password, salt, iterations, keyLength, cb ){
-	crypto.pbkdf2(password, salt, iterations, keyLength, function( err, hash ){
-		if (err)
-			return cb(err);
-
-		cb(null, new Buffer(hash).toString('base64'));
-	});
+function pbkdf2( password, salt, iterations, keyLength ){
+	return crypto
+		.pbkdf2Async(password, salt, iterations, keyLength)
+		.call('toString', 'base64');
 }
