@@ -49,7 +49,12 @@ extend(Credential.prototype, {
 	},
 
 	expired: function( hash, days ){
-		return expired(JSON.parse(hash), this.work, days || this.expiry);
+		var parsed = parseHash(hash);
+
+		if (!parsed.iterations)
+			throw new Error('Couldn\'t parse hash.');
+
+		return expired(parsed, this.work, days || this.expiry);
 	},
 
 	configure: function( opts ) {

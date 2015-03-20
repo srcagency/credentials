@@ -29,3 +29,11 @@ test('expired with expiry in the past', function( t ){
 		t.end();
 	});
 });
+
+test('expired with matlformed hash', function( t ){
+	t.throws(function(){
+		pw.expired('bad');
+	}, /parse/, 'should throw an error');
+
+	t.end();
+});
