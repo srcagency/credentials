@@ -25,7 +25,7 @@ extend(Credential.prototype, {
 		var keyLength = this.keyLength;
 		var n = iterations(this.work);
 
-		Promise.try(function(){
+		return Promise.try(function(){
 			if (typeof (password) !== 'string' || password.length === 0)
 				throw new Error('Password must be a non-empty string.');
 
@@ -38,7 +38,7 @@ extend(Credential.prototype, {
 	verify: function( hash, input, cb ){
 		var stored = parseHash(hash);
 
-		Promise.try(function(){
+		return Promise.try(function(){
 			if (typeof input !== 'string' || input.length === 0)
 				throw new Error('Input password must be a non-empty string.');
 
