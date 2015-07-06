@@ -103,4 +103,4 @@ should increase over time. This is handled automatically in Credential with an
 algorithm of: `2^(msSinceY2k / 2*msPerYear)`.
 
 This is also a good reason to force users to change passwords once in a while
-- the new password will be hashed slightly stronger.
+as the new password will be hashed slightly stronger.
