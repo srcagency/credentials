@@ -44,6 +44,7 @@ Optionally accepts a hash of configuration values. Defaults to:
 	keyLength: 66,			// length of salt
 	hashMethod: 'pbkdf2',	// node crypto method used
 	work: 1,				// relative work load (0.5 for half the work)
+	expiry: 90,				// days, used only for "expired" method
 }
 */
 
@@ -55,7 +56,15 @@ pw.verify(hash, password);
 
 // callback( err, isValid )
 
+pw.expired(hash/*[, days]*/)
+
+/*
+true/false if hash was created before/after "days" (defaults to configuration
+value "expiry")
+*/
+
 pw.configure(otps)
+
 ```
 
 ## Examples
@@ -84,6 +93,13 @@ pw.verify(savedHash, userInput)
 		// allow access
 	});
 ```
+
+## Expiry
+
+The `expiry` configuration value is used entirely by the `expired` method.
+`verify` does not check if a password is expired.
+
+The main purpose of this concept is to tell the user to update their password.
 
 ## Work and iterations
 
