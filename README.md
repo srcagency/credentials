@@ -84,3 +84,20 @@ pw.verify(savedHash, userInput)
 		// allow access
 	});
 ```
+
+## Work and iterations
+
+One problem with password hashing is that any hash can be broken given enough
+computational time. It is simply a matter of trying all possibilities until
+the right one is found.
+
+To mitigate this, algorithms with significant work load is chosen and then
+applied multiple times (iteration count).
+
+It is hard to determine the correct work load. A general rule of thumb is:
+**use as much time (work) as possible, without annoying your users**. This
+could be something like 800ms.
+
+With computers getting ever more powerful, you can imagine the work load
+should increase over time. This is handled automatically in Credential with an
+algorithm of: `2^((year - 2000) / 2)`.
