@@ -4,7 +4,7 @@
 	"description": "Easy password hashing and verification in Node. Protects against brute force, rainbow tables, and timing attacks.",
 	"main": "src",
 	"dependencies": {
-		"extend": "~2.0.0",
+		"object-assign": "^3.0.0",
 		"scmp": "^1.0.0",
 		"bluebird": "^2.9.14"
 	},

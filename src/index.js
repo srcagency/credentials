@@ -1,6 +1,6 @@
 'use strict';
 
-var extend = require('extend');
+var assign = require('object-assign');
 var Promise = require('bluebird');
 var hash = require('./hash');
 var verify = require('./verify');
@@ -14,7 +14,7 @@ function Credential( opts ){
 	this.configure(opts);
 }
 
-extend(Credential.prototype, {
+assign(Credential.prototype, {
 	keyLength: 66,
 	hashMethod: 'pbkdf2',
 	work: 1,
@@ -60,7 +60,7 @@ extend(Credential.prototype, {
 	},
 
 	configure: function( opts ) {
-		extend(this, opts);
+		assign(this, opts);
 		return this;
 	},
 });
