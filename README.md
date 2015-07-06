@@ -21,7 +21,7 @@ Employs cryptographically secure, per password salts to prevent rainbow table
 attacks. Key stretching is used to make brute force attacks impractical. A
 constant time verification check prevents variable response time attacks.
 
-<-- from original README
+*<-- from original README*
 
 This package is an attempt to create a reference point for secure password
 storage and avoid duplicate effort.
