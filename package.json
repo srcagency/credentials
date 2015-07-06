@@ -4,12 +4,12 @@
 	"description": "Easy password hashing and verification in Node. Protects against brute force, rainbow tables, and timing attacks.",
 	"main": "src",
 	"dependencies": {
-		"object-assign": "^3.0.0",
-		"scmp": "^1.0.0",
-		"bluebird": "^2.9.14"
+		"object-assign": "3.0.0",
+		"scmp": "1.0.0",
+		"bluebird": "2.9.32"
 	},
 	"devDependencies": {
-		"tape": "^3.0.3"
+		"tape": "^4.0.0"
 	},
 	"scripts": {
 		"test": "node test"
