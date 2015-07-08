@@ -42,7 +42,6 @@ Optionally accepts a hash of configuration values. Defaults to:
 
 {
 	keyLength: 66,			// length of salt
-	hashMethod: 'pbkdf2',	// node crypto method used
 	work: 1,				// relative work load (0.5 for half the work)
 	expiry: 90,				// days, used only for "expired" method
 }
