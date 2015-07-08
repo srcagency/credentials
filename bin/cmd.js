@@ -3,7 +3,7 @@
 
 var program = require('commander');
 var pluck = require('pluck-keys');
-var credential = require('../')();
+var credentials = require('../')();
 
 var stdin = '';
 
@@ -16,20 +16,20 @@ program
 	.option('-w --work <work>', 'relative work load (0.5 for half the work)', Number)
 	.option('-k --key-length <key-length>', 'length of salt', Number)
 	.action(function( password, options ){
-		credential.configure(pluck([
+		credentials.configure(pluck([
 			'keyLength',
 			'hashMethod',
 			'work'
 		], options));
 
-		credential.hash(stdin || password).then(console.log, console.error);
+		credentials.hash(stdin || password).then(console.log, console.error);
 	});
 
 program
 	.command('verify [hash] <password>')
 	.description('Verify password')
 	.action(function( hash, password ){
-		credential.verify(stdin || hash, password).then(function( result ){
+		credentials.verify(stdin || hash, password).then(function( result ){
 			console.log(result ? 'Verified' : 'Invalid');
 			process.exit(result ? 0 : 1);
 		}, console.error);

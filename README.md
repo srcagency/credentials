@@ -1,4 +1,4 @@
-# Credential
+# Credentials
 
 This was initially a fork of @ericelliott's great effort at
 https://github.com/ericelliott/credential with the main differences being:
@@ -31,11 +31,11 @@ If you find a security flaw in this code, please contact security@src.agency.
 ## Usage
 
 ```shell
-npm install --save credential
+npm install credentials
 ```
 
 ```js
-var pw = require('credential')();
+var pw = require('credentials')();
 
 /*
 Optionally accepts a hash of configuration values. Defaults to:
@@ -71,7 +71,7 @@ pw.configure(otps)
 ### Sign up
 
 ```js
-var pw = require('credential')();
+var pw = require('credentials')();
 
 pw.hash(userInput)
 	.then(function( hash ){
@@ -82,7 +82,7 @@ pw.hash(userInput)
 ### Sign in
 
 ```js
-var pw = require('credential'),
+var pw = require('credentials'),
 
 pw.verify(savedHash, userInput)
 	.then(function( isValid ){
@@ -96,7 +96,7 @@ pw.verify(savedHash, userInput)
 ## CLI
 
 ```shell
-$ credential --help
+$ credentials --help
 
   Usage: cmd [options] [command]
 
@@ -112,7 +112,7 @@ $ credential --help
 ```
 
 ```shell
-$ credential hash --help
+$ credentials hash --help
 
   Usage: hash [options] [password]
 
@@ -128,7 +128,7 @@ $ credential hash --help
 The `password` argument for `hash` and the `hash` argument for `verify` both support piping by replacing with a dash (`-`):
 
 ```shell
-$ echo -n "my password" | credential hash - | credential verify - "my password"
+$ echo -n "my password" | credentials hash - | credentials verify - "my password"
 Verified
 ```
 
@@ -155,8 +155,8 @@ It is hard to determine the correct work load. A general rule of thumb is:
 could be something like 800ms.
 
 With computers getting ever more powerful, you can imagine the work load
-should increase over time. This is handled automatically in Credential with an
-algorithm of: `2^(msSinceY2k / 2*msPerYear)`.
+should increase over time. This is handled automatically in Credentials with
+an algorithm of: `2^(msSinceY2k / 2*msPerYear)`.
 
 This is also a good reason to force users to change passwords once in a while
 as the new password will be hashed slightly stronger.

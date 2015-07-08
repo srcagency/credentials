@@ -1,7 +1,7 @@
 {
-	"name": "credential",
-	"version": "0.2.5",
-	"description": "Easy password hashing and verification in Node. Protects against brute force, rainbow tables, and timing attacks.",
+	"name": "credentials",
+	"version": "1.0.0",
+	"description": "Secure password hashing and verification",
 	"main": "src",
 	"bin": {
 		"credentials": "bin/cmd.js"
@@ -21,7 +21,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:ericelliott/credential.git"
+		"url": "https://github.com/srcagency/credentials.git"
 	},
 	"keywords": [
 		"password",
@@ -39,6 +39,6 @@
 		"stretching",
 		"PBKDF2"
 	],
-	"author": "Eric Elliott",
+	"author": "Thomas Jensen <thomas@src.agency> (http://src.agency)",
 	"license": "MIT"
 }

@@ -5,16 +5,16 @@ var Promise = require('bluebird');
 var hash = require('./hash');
 var verify = require('./verify');
 
-module.exports = Credential;
+module.exports = Credentials;
 
-function Credential( opts ){
-	if (!(this instanceof Credential))
-		return new Credential(opts);
+function Credentials( opts ){
+	if (!(this instanceof Credentials))
+		return new Credentials(opts);
 
 	this.configure(opts);
 }
 
-assign(Credential.prototype, {
+assign(Credentials.prototype, {
 	keyLength: 66,
 	hashMethod: 'pbkdf2',
 	work: 1,
