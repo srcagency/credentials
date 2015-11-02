@@ -7,14 +7,14 @@
 		"credentials": "bin/cmd.js"
 	},
 	"dependencies": {
-		"object-assign": "3.0.0",
+		"object-assign": "4.0.1",
 		"scmp": "1.0.0",
-		"bluebird": "2.9.32",
-		"commander": "2.8.1",
+		"bluebird": "3.0.5",
+		"commander": "2.9.0",
 		"pluck-keys": "0.0.4"
 	},
 	"devDependencies": {
-		"tape": "^4.0.0"
+		"tape": "^4.2.2"
 	},
 	"scripts": {
 		"test": "node test"

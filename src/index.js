@@ -32,7 +32,7 @@ assign(Credentials.prototype, {
 			return hash(hashMethod, password, n, keyLength)
 				.then(JSON.stringify);
 		})
-			.nodeify(cb);
+			.asCallback(cb);
 	},
 
 	verify: function( hash, input, cb ){
@@ -47,7 +47,7 @@ assign(Credentials.prototype, {
 
 			return verify(stored, input);
 		})
-			.nodeify(cb);
+			.asCallback(cb);
 	},
 
 	expired: function( hash, days ){
