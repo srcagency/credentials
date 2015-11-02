@@ -14,7 +14,5 @@ function verify( storedhash, input ){
 
 	var hash = hashMethod(input, salt, iterations, keyLength);
 
-	return Promise
-		.join(hash, storedhash.hash)
-		.spread(constantEquals);
+	return Promise.join(hash, storedhash.hash, constantEquals);
 }

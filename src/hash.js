@@ -8,10 +8,9 @@ module.exports = hash;
 
 function hash( algo, password, iterations, keyLength ){
 	var salt = createSalt(keyLength);
+	var hashMethod = hashMethods[algo];
 
-	var hash = Promise
-		.join(password, salt, iterations, keyLength)
-		.spread(hashMethods[algo]);
+	var hash = Promise.join(password, salt, iterations, keyLength, hashMethod);
 
 	return Promise.props({
 		salt: salt,
