@@ -6,6 +6,9 @@
 	"bin": {
 		"credentials": "bin/cmd.js"
 	},
+	"engines": {
+		"node" : ">=0.12.0"
+	},
 	"dependencies": {
 		"bluebird": "^3.3.5",
 		"commander": "^2.9.0",

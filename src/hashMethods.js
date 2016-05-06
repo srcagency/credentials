@@ -9,6 +9,6 @@ module.exports = {
 
 function pbkdf2( password, salt, iterations, keyLength ){
 	return crypto
-		.pbkdf2Async(password, salt, iterations, keyLength)
+		.pbkdf2Async(password, salt, iterations, keyLength, 'SHA1')
 		.call('toString', 'base64');
 }
