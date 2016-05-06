@@ -1,6 +1,6 @@
 {
 	"name": "credentials",
-	"version": "1.0.1",
+	"version": "2.0.0",
 	"description": "Secure password hashing and verification",
 	"main": "src",
 	"bin": {
