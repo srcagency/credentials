@@ -30,7 +30,7 @@ test('expired with expiry in the past', function( t ){
 	});
 });
 
-test('expired with matlformed hash', function( t ){
+test('expired with malformed hash', function( t ){
 	t.throws(function(){
 		pw.expired('bad');
 	}, /parse/, 'should throw an error');
