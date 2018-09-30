@@ -7,7 +7,7 @@
 		"credentials": "bin/cmd.js"
 	},
 	"engines": {
-		"node" : ">=0.12.0"
+		"node": ">=0.12.0"
 	},
 	"dependencies": {
 		"bluebird": "^3.3.5",
@@ -17,6 +17,7 @@
 		"scmp": "^1.0.0"
 	},
 	"devDependencies": {
+		"prettier": "^1.14.3",
 		"tape": "^4.5.1"
 	},
 	"scripts": {
@@ -43,5 +44,21 @@
 		"PBKDF2"
 	],
 	"author": "Thomas Jensen <thomas@src.agency> (http://src.agency)",
-	"license": "MIT"
+	"license": "MIT",
+	"prettier": {
+		"semi": false,
+		"singleQuote": true,
+		"useTabs": true,
+		"bracketSpacing": false,
+		"trailingComma": "es5",
+		"tabWidth": 4,
+		"overrides": [
+			{
+				"files": "*.md",
+				"options": {
+					"tabWidth": 2
+				}
+			}
+		]
+	}
 }

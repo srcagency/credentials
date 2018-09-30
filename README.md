@@ -3,9 +3,9 @@
 This was initially a fork of @ericelliott's great effort at
 https://github.com/ericelliott/credential with the main differences being:
 
-- API supports callbacks *and* promises
+- API supports callbacks _and_ promises
 - Each instance is separate - no globals or leak to other instances
-- No travis, linting, webpack or other tooling cruft
+- No tooling cruft
 
 API (after instantiation) and produced hashes are 100% compatible.
 
@@ -21,7 +21,7 @@ Employs cryptographically secure, per password salts to prevent rainbow table
 attacks. Key stretching is used to make brute force attacks impractical. A
 constant time verification check prevents variable response time attacks.
 
-*<-- from original README*
+_<-- from original README_
 
 This package is an attempt to create a reference point for secure password
 storage and avoid duplicate effort.
@@ -35,27 +35,27 @@ npm install credentials
 ```
 
 ```js
-var pw = require('credentials')();
+var pw = require('credentials')()
 
 /*
 Optionally accepts a hash of configuration values. Defaults to:
 
 {
-	keyLength: 66,			// length of salt
-	work: 1,				// relative work load (0.5 for half the work)
-	expiry: 90,				// days, used only for "expired" method
+  keyLength: 66,      // length of salt
+  work: 1,        // relative work load (0.5 for half the work)
+  expiry: 90,       // days, used only for "expired" method
 }
 */
 
-pw.hash(password);
+pw.hash(password)
 
 // callback( err, hash )
 
-pw.verify(hash, password);
+pw.verify(hash, password)
 
 // callback( err, isValid )
 
-pw.expired(hash/*[, days]*/)
+pw.expired(hash /*[, days]*/)
 
 /*
 true/false if hash was created before/after "days" (defaults to configuration
@@ -63,7 +63,6 @@ value "expiry")
 */
 
 pw.configure(otps)
-
 ```
 
 ## Examples
@@ -71,12 +70,11 @@ pw.configure(otps)
 ### Sign up
 
 ```js
-var pw = require('credentials')();
+var pw = require('credentials')()
 
-pw.hash(userInput)
-	.then(function( hash ){
-		saveHash(hash);
-	});
+pw.hash(userInput).then(function(hash) {
+  saveHash(hash)
+})
 ```
 
 ### Sign in
@@ -85,12 +83,12 @@ pw.hash(userInput)
 var pw = require('credentials'),
 
 pw.verify(savedHash, userInput)
-	.then(function( isValid ){
-		if (!isValid)
-			throw new CredentialsError('Bad credentials');
+  .then(function( isValid ){
+    if (!isValid)
+      throw new CredentialsError('Bad credentials');
 
-		// allow access
-	});
+    // allow access
+  });
 ```
 
 ## CLI
@@ -125,7 +123,8 @@ $ credentials hash --help
     -k --key-length <key-length>  length of salt
 ```
 
-The `password` argument for `hash` and the `hash` argument for `verify` both support piping by replacing with a dash (`-`):
+The `password` argument for `hash` and the `hash` argument for `verify` both
+support piping by replacing with a dash (`-`):
 
 ```shell
 $ echo -n "my password" | credentials hash - | credentials verify - "my password"
@@ -144,19 +143,19 @@ The main purpose of this concept is to tell the user to update their password.
 ## Work and iterations
 
 One problem with password hashing is that any hash can be broken given enough
-computational time. It is simply a matter of trying all possibilities until
-the right one is found.
+computational time. It is simply a matter of trying all possibilities until the
+right one is found.
 
 To mitigate this, algorithms with significant work load is chosen and then
 applied multiple times (iteration count).
 
-It is hard to determine the correct work load. A general rule of thumb is:
-**use as much time (work) as possible, without annoying your users**. This
-could be something like 800ms.
+It is hard to determine the correct work load. A general rule of thumb is: **use
+as much time (work) as possible, without annoying your users**. This could be
+something like 800ms.
 
-With computers getting ever more powerful, you can imagine the work load
-should increase over time. This is handled automatically in Credentials with
-an algorithm of: `2^(msSinceY2k / 2*msPerYear)`.
+With computers getting ever more powerful, you can imagine the work load should
+increase over time. This is handled automatically in Credentials with an
+algorithm of: `2^(msSinceY2k / 2*msPerYear)`.
 
-This is also a good reason to force users to change passwords once in a while
-as the new password will be hashed slightly stronger.
+This is also a good reason to force users to change passwords once in a while as
+the new password will be hashed slightly stronger.

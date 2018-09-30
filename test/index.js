@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-require('./hash');
-require('./verify');
-require('./expired');
-require('./options');
+require('./hash')
+require('./verify')
+require('./expired')
+require('./options')

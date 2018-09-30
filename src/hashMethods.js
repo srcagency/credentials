@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-var Promise = require('bluebird');
-var crypto = Promise.promisifyAll(require('crypto'));
+var Promise = require('bluebird')
+var crypto = Promise.promisifyAll(require('crypto'))
 
 module.exports = {
 	pbkdf2: pbkdf2,
-};
+}
 
-function pbkdf2( password, salt, iterations, keyLength ){
+function pbkdf2(password, salt, iterations, keyLength) {
 	return crypto
 		.pbkdf2Async(password, salt, iterations, keyLength, 'SHA1')
-		.call('toString', 'base64');
+		.call('toString', 'base64')
 }

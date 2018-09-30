@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
-var Promise = require('bluebird');
-var crypto = Promise.promisifyAll(require('crypto'));
-var hashMethods = require('./hashMethods');
+var Promise = require('bluebird')
+var crypto = Promise.promisifyAll(require('crypto'))
+var hashMethods = require('./hashMethods')
 
-module.exports = hash;
+module.exports = hash
 
-function hash( algo, password, iterations, keyLength ){
-	var salt = createSalt(keyLength);
-	var hashMethod = hashMethods[algo];
+function hash(algo, password, iterations, keyLength) {
+	var salt = createSalt(keyLength)
+	var hashMethod = hashMethods[algo]
 
-	var hash = Promise.join(password, salt, iterations, keyLength, hashMethod);
+	var hash = Promise.join(password, salt, iterations, keyLength, hashMethod)
 
 	return Promise.props({
 		salt: salt,
@@ -18,11 +18,9 @@ function hash( algo, password, iterations, keyLength ){
 		keyLength: keyLength,
 		hashMethod: algo,
 		iterations: iterations,
-	});
+	})
 }
 
-function createSalt( keyLength ){
-	return crypto
-		.randomBytesAsync(keyLength)
-		.call('toString', 'base64');
+function createSalt(keyLength) {
+	return crypto.randomBytesAsync(keyLength).call('toString', 'base64')
 }

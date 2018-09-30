@@ -1,17 +1,16 @@
-'use strict';
+'use strict'
 
-var assign = require('object-assign');
-var Promise = require('bluebird');
-var hash = require('./hash');
-var verify = require('./verify');
+var assign = require('object-assign')
+var Promise = require('bluebird')
+var hash = require('./hash')
+var verify = require('./verify')
 
-module.exports = Credentials;
+module.exports = Credentials
 
-function Credentials( opts ){
-	if (!(this instanceof Credentials))
-		return new Credentials(opts);
+function Credentials(opts) {
+	if (!(this instanceof Credentials)) return new Credentials(opts)
 
-	this.configure(opts);
+	this.configure(opts)
 }
 
 assign(Credentials.prototype, {
@@ -20,72 +19,68 @@ assign(Credentials.prototype, {
 	work: 1,
 	expiry: 90,
 
-	hash: function( password, cb ){
-		var hashMethod = this.hashMethod;
-		var keyLength = this.keyLength;
-		var n = iterations(this.work);
+	hash: function(password, cb) {
+		var hashMethod = this.hashMethod
+		var keyLength = this.keyLength
+		var n = iterations(this.work)
 
-		return Promise.try(function(){
-			if (typeof (password) !== 'string' || password.length === 0)
-				throw new Error('Password must be a non-empty string.');
+		return Promise.try(function() {
+			if (typeof password !== 'string' || password.length === 0)
+				throw new Error('Password must be a non-empty string.')
 
-			return hash(hashMethod, password, n, keyLength)
-				.then(JSON.stringify);
-		})
-			.asCallback(cb);
+			return hash(hashMethod, password, n, keyLength).then(JSON.stringify)
+		}).asCallback(cb)
 	},
 
-	verify: function( hash, input, cb ){
-		var stored = parseHash(hash);
+	verify: function(hash, input, cb) {
+		var stored = parseHash(hash)
 
-		return Promise.try(function(){
+		return Promise.try(function() {
 			if (typeof input !== 'string' || input.length === 0)
-				throw new Error('Input password must be a non-empty string.');
+				throw new Error('Input password must be a non-empty string.')
 
 			if (!stored.hashMethod)
-				throw new Error('Couldn\'t parse stored hash.');
+				throw new Error("Couldn't parse stored hash.")
 
-			return verify(stored, input);
-		})
-			.asCallback(cb);
+			return verify(stored, input)
+		}).asCallback(cb)
 	},
 
-	expired: function( hash, days ){
-		var parsed = parseHash(hash);
+	expired: function(hash, days) {
+		var parsed = parseHash(hash)
 
-		if (!parsed.iterations)
-			throw new Error('Couldn\'t parse hash.');
+		if (!parsed.iterations) throw new Error("Couldn't parse hash.")
 
-		return expired(parsed, this.work, days || this.expiry);
+		return expired(parsed, this.work, days || this.expiry)
 	},
 
-	configure: function( opts ) {
-		assign(this, opts);
-		return this;
+	configure: function(opts) {
+		assign(this, opts)
+		return this
 	},
-});
+})
 
-function parseHash( encodedHash ){
+function parseHash(encodedHash) {
 	try {
-		return JSON.parse(encodedHash);
+		return JSON.parse(encodedHash)
 	} catch (err) {
-		return err;
+		return err
 	}
 }
 
-var msPerDay = 24 * 60 * 60 * 1000;
-var msPerYear = 366 * msPerDay;
-var y2k = new Date(2000, 0, 1);
+var msPerDay = 24 * 60 * 60 * 1000
+var msPerYear = 366 * msPerDay
+var y2k = new Date(2000, 0, 1)
 
-function iterations( work, base ){
-	var years = ((base || Date.now()) - y2k) / msPerYear;
+function iterations(work, base) {
+	var years = ((base || Date.now()) - y2k) / msPerYear
 
-	return Math.floor(1000 * Math.pow(2, years / 2) * work);
+	return Math.floor(1000 * Math.pow(2, years / 2) * work)
 }
 
-function expired( hash, work, days ){
-	var base = Date.now() - days * msPerDay;
-	var minIterations = iterations(work, base);
+function expired(hash, work, days) {
+	var base = Date.now() - days * msPerDay
+	var minIterations = iterations(work, base)
 
-	return hash.iterations < minIterations;
+	return hash.iterations < minIterations
 }
