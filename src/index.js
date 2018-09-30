@@ -1,9 +1,10 @@
 'use strict'
 
-var assign = require('object-assign')
-var Promise = require('bluebird')
-var hash = require('./hash')
-var verify = require('./verify')
+const assign = require('object-assign')
+const Promise = require('bluebird')
+const {reject} = Promise
+const hash = require('./hash')
+const verify = require('./verify')
 
 module.exports = Credentials
 
@@ -20,34 +21,38 @@ assign(Credentials.prototype, {
 	expiry: 90,
 
 	hash: function(password, cb) {
-		var hashMethod = this.hashMethod
-		var keyLength = this.keyLength
-		var n = iterations(this.work)
+		const hashMethod = this.hashMethod
+		const keyLength = this.keyLength
+		const n = iterations(this.work)
 
-		return Promise.try(function() {
+		Promise.try(() => {
 			if (typeof password !== 'string' || password.length === 0)
-				throw new Error('Password must be a non-empty string.')
+				return reject(new Error('Password must be a non-empty string.'))
 
-			return hash(hashMethod, password, n, keyLength).then(JSON.stringify)
-		}).asCallback(cb)
+			return hash(hashMethod, password, n, keyLength)
+		})
+			.then(JSON.stringify)
+			.asCallback(cb)
 	},
 
 	verify: function(hash, input, cb) {
-		var stored = parseHash(hash)
+		const stored = parseHash(hash)
 
-		return Promise.try(function() {
+		Promise.try(() => {
 			if (typeof input !== 'string' || input.length === 0)
-				throw new Error('Input password must be a non-empty string.')
+				return reject(
+					new Error('Input password must be a non-empty string.')
+				)
 
 			if (!stored.hashMethod)
-				throw new Error("Couldn't parse stored hash.")
+				return reject(new Error("Couldn't parse stored hash."))
 
 			return verify(stored, input)
 		}).asCallback(cb)
 	},
 
 	expired: function(hash, days) {
-		var parsed = parseHash(hash)
+		const parsed = parseHash(hash)
 
 		if (!parsed.iterations) throw new Error("Couldn't parse hash.")
 
@@ -68,19 +73,19 @@ function parseHash(encodedHash) {
 	}
 }
 
-var msPerDay = 24 * 60 * 60 * 1000
-var msPerYear = 366 * msPerDay
-var y2k = new Date(2000, 0, 1)
+const msPerDay = 24 * 60 * 60 * 1000
+const msPerYear = 366 * msPerDay
+const y2k = new Date(2000, 0, 1)
 
 function iterations(work, base) {
-	var years = ((base || Date.now()) - y2k) / msPerYear
+	const years = ((base || Date.now()) - y2k) / msPerYear
 
 	return Math.floor(1000 * Math.pow(2, years / 2) * work)
 }
 
 function expired(hash, work, days) {
-	var base = Date.now() - days * msPerDay
-	var minIterations = iterations(work, base)
+	const base = Date.now() - days * msPerDay
+	const minIterations = iterations(work, base)
 
 	return hash.iterations < minIterations
 }

@@ -1,26 +1,28 @@
 'use strict'
 
-var Promise = require('bluebird')
-var crypto = Promise.promisifyAll(require('crypto'))
-var hashMethods = require('./hashMethods')
+const {join, promisify} = require('bluebird')
+const crypto = require('crypto')
+const hashMethods = require('./hashMethods')
+
+const randomBytes = promisify(crypto.randomBytes)
 
 module.exports = hash
 
 function hash(algo, password, iterations, keyLength) {
-	var salt = createSalt(keyLength)
-	var hashMethod = hashMethods[algo]
+	const salt = createSalt(keyLength)
+	const hashMethod = hashMethods[algo]
 
-	var hash = Promise.join(password, salt, iterations, keyLength, hashMethod)
+	const hash = join(password, salt, iterations, keyLength, hashMethod)
 
-	return Promise.props({
-		salt: salt,
-		hash: hash,
-		keyLength: keyLength,
+	return join(salt, hash, (salt, hash) => ({
+		salt,
+		hash,
+		keyLength,
 		hashMethod: algo,
-		iterations: iterations,
-	})
+		iterations,
+	}))
 }
 
 function createSalt(keyLength) {
-	return crypto.randomBytesAsync(keyLength).call('toString', 'base64')
+	return randomBytes(keyLength).call('toString', 'base64')
 }

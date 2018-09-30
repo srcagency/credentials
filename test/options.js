@@ -1,21 +1,21 @@
 'use strict'
 
-var test = require('tape')
-var pw = require('../')()
+const test = require('tape')
+const pw = require('../')()
 
-test('options', function(t) {
-	var work = 0.5
-	var keyLength = 12
+test('options', t => {
+	const work = 0.5
+	const keyLength = 12
 
-	pw.hash('foo', function(err, hash) {
-		var defaultIterations = JSON.parse(hash).iterations
+	pw.hash('foo', (err, hash) => {
+		const defaultIterations = JSON.parse(hash).iterations
 
 		pw.configure({
 			work: work,
 			keyLength: keyLength,
 		})
 
-		pw.hash('foo', function(err, hash) {
+		pw.hash('foo', (err, hash) => {
 			t.equal(
 				JSON.parse(hash).iterations,
 				Math.floor(defaultIterations * work),
