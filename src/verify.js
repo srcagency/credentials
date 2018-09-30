@@ -1,6 +1,6 @@
 'use strict'
 
-const constantEquals = require('scmp')
+const {timingSafeEqual} = require('crypto')
 const {join} = require('bluebird')
 const hashMethods = require('./hashMethods')
 
@@ -14,5 +14,5 @@ function verify(storedhash, input) {
 
 	const hash = hashMethod(input, salt, iterations, keyLength)
 
-	return join(hash, storedhash.hash, constantEquals)
+	return join(hash, Buffer.from(storedhash.hash, 'base64'), timingSafeEqual)
 }

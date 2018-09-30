@@ -16,7 +16,7 @@ function hash(algo, password, iterations, keyLength) {
 
 	return join(salt, hash, (salt, hash) => ({
 		salt,
-		hash,
+		hash: hash.toString('base64'),
 		keyLength,
 		hashMethod: algo,
 		iterations,

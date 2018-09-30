@@ -7,14 +7,13 @@
 		"credentials": "bin/cmd.js"
 	},
 	"dependencies": {
-		"bluebird": "^3.3.5",
-		"commander": "^2.9.0",
-		"object-assign": "^4.1.0",
-		"scmp": "^1.0.0"
+		"bluebird": "^3.5.2",
+		"commander": "^2.18.0",
+		"object-assign": "^4.1.1"
 	},
 	"devDependencies": {
 		"prettier": "^1.14.3",
-		"tape": "^4.5.1"
+		"tape": "^4.9.1"
 	},
 	"scripts": {
 		"test": "node test"

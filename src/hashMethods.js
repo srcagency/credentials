@@ -6,8 +6,5 @@ const pbkdf2 = promisify(crypto.pbkdf2)
 
 module.exports = {
 	pbkdf2: (password, salt, iterations, keyLength) =>
-		pbkdf2(password, salt, iterations, keyLength, 'SHA1').call(
-			'toString',
-			'base64'
-		),
+		pbkdf2(password, salt, iterations, keyLength, 'SHA1'),
 }
