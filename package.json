@@ -6,10 +6,10 @@
 		"credentials": "bin/cmd.js"
 	},
 	"dependencies": {
-		"bluebird": "^3.5.2",
 		"commander": "^2.18.0"
 	},
 	"devDependencies": {
+		"bluebird": "^3.5.2",
 		"prettier": "^1.14.3",
 		"tape": "^4.9.1"
 	},

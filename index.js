@@ -1,10 +1,10 @@
 'use strict'
 
+const util = require('util')
 const crypto = require('crypto')
-const {join, reject, promisify} = require('bluebird')
 
-const pbkdf2 = promisify(crypto.pbkdf2)
-const randomBytes = promisify(crypto.randomBytes)
+const pbkdf2 = util.promisify(crypto.pbkdf2)
+const randomBytes = util.promisify(crypto.randomBytes)
 const timingSafeEqual = crypto.timingSafeEqual
 
 const msPerDay = 24 * 60 * 60 * 1000
@@ -40,11 +40,11 @@ function hash(password, opts) {
 	}
 
 	const salt = randomBytes(keyLength)
-	const hash = join(salt, salt =>
+	const hash = salt.then(salt =>
 		pbkdf2(password, salt, iterations, keyLength, 'sha512')
 	)
 
-	return join(salt, hash, (salt, hash) =>
+	return Promise.all([salt, hash]).then(([salt, hash]) =>
 		JSON.stringify({
 			hashMethod: 'pbkdf2-sha512',
 			salt: salt.toString('base64'),
@@ -73,7 +73,7 @@ function verify(stored, input) {
 
 	const hashB = pbkdf2(input, salt, iterations, keyLength, hfn)
 
-	return join(hashB, hash, timingSafeEqual)
+	return Promise.all([hashB, hash]).then(([a, b]) => timingSafeEqual(a, b))
 }
 
 function expired(stored, days, opts) {
@@ -92,7 +92,7 @@ function calculateIterations(work, base) {
 }
 
 function bail(message) {
-	return reject(new Error(message))
+	return Promise.reject(new Error(message))
 }
 
 function parse(stored) {
