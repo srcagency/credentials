@@ -5,12 +5,12 @@ const pw = require('../')()
 
 test('verify with right pw', t => {
 	const pass = 'foo'
+	t.plan(1)
 
 	pw.hash(pass).then(storedHash =>
-		pw.verify(storedHash, pass).then(isValid => {
-			t.ok(isValid, 'should return true for matching password.')
-			t.end()
-		})
+		pw
+			.verify(storedHash, pass)
+			.then(isValid => t.equal(isValid, true, 'is valid'))
 	)
 })
 
@@ -18,50 +18,36 @@ test('verify with broken stored hash', t => {
 	const pass = 'foo'
 	const storedHash =
 		'aoeuntkh;kbanotehudil,.prcgidax$aoesnitd,riouxbx;qjkwmoeuicgr'
+	t.plan(1)
 
-	pw.verify(storedHash, pass).catch(err => {
-		t.ok(err, 'should cause error.')
-		t.end()
-	})
+	pw.verify(storedHash, pass).catch(err => t.ok(err))
 })
 
 test('verify with wrong pw', t => {
 	const pass = 'foo'
+	t.plan(1)
 
 	pw.hash(pass).then(storedHash =>
-		pw.verify(storedHash, 'bar').then(isValid => {
-			t.equal(isValid, false, 'is valid.')
-			t.end()
-		})
+		pw
+			.verify(storedHash, 'bar')
+			.then(isValid => t.equal(isValid, false, 'is valid'))
 	)
 })
 
 test('verify with undefined password', t => {
 	const pass = 'foo'
+	t.plan(1)
 
-	pw.hash(pass).then(storedHash => {
-		try {
-			pw.verify(storedHash, undefined).catch(err => {
-				t.ok(err, 'should cause error.')
-				t.end()
-			})
-		} catch (e) {
-			t.fail('should not throw')
-		}
-	})
+	pw.hash(pass).then(storedHash =>
+		pw.verify(storedHash, undefined).catch(err => t.ok(err))
+	)
 })
 
 test('verify with empty password', t => {
 	const pass = 'foo'
+	t.plan(1)
 
-	pw.hash(pass).then(storedHash => {
-		try {
-			pw.verify(storedHash, '').catch(err => {
-				t.ok(err, 'should cause error.')
-				t.end()
-			})
-		} catch (e) {
-			t.fail('should not throw')
-		}
-	})
+	pw.hash(pass).then(storedHash =>
+		pw.verify(storedHash, '').catch(err => t.ok(err))
+	)
 })

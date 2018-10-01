@@ -1,52 +1,33 @@
 'use strict'
 
+const {join} = require('bluebird')
 const test = require('tape')
 const pw = require('../')()
 
-test('hash', t =>
-	pw.hash('foo').then(hash => {
-		t.equal(typeof hash, 'string', 'should produce a hash string.')
-		t.ok(
-			JSON.parse(hash).hash,
-			'should a json object representing the hash.'
-		)
-		t.end()
-	}))
+test('hash', t => {
+	t.plan(1)
+	pw.hash('foo').then(hash => t.equal(typeof hash, 'string', 'type'))
+})
 
-test('hash with different passwords', t =>
-	pw.hash('foo').then(fooHash =>
-		pw.hash('bar').then(barHash => {
-			t.notEqual(fooHash, barHash, 'should produce a different hash.')
-			t.end()
-		})
-	))
+test('hash with different passwords', t => {
+	t.plan(1)
+	join(pw.hash('foo'), pw.hash('bar'), (a, b) =>
+		t.ok(a !== b, 'is not equal')
+	)
+})
 
-test('hash with same passwords', t =>
-	pw.hash('foo').then(fooHash =>
-		pw.hash('foo').then(barHash => {
-			t.notEqual(fooHash, barHash, 'should produce a different hash.')
-			t.end()
-		})
-	))
+test('hash with same passwords', t => {
+	const pass = 'foo'
+	t.plan(1)
+	join(pw.hash(pass), pw.hash(pass), (a, b) => t.ok(a !== b, 'is not equal'))
+})
 
 test('hash with undefined password', t => {
-	try {
-		pw.hash(undefined).catch(err => {
-			t.ok(err, 'should cause error.')
-			t.end()
-		})
-	} catch (e) {
-		t.fail('should not throw')
-	}
+	t.plan(1)
+	pw.hash(undefined).catch(err => t.ok(err))
 })
 
 test('hash with empty password', t => {
-	try {
-		pw.hash('').catch(err => {
-			t.ok(err, 'should cause error.')
-			t.end()
-		})
-	} catch (e) {
-		t.fail('should not throw')
-	}
+	t.plan(1)
+	pw.hash('').catch(err => t.ok(err))
 })

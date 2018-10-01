@@ -3,50 +3,30 @@
 const test = require('tape')
 const pw = require('../')()
 
-test('expired with valid hash and default expiry', t => {
-	const pass = 'foo'
+const fooHash = pw.hash('foo')
 
-	pw.hash(pass).then(storedHash => {
-		t.notOk(
-			pw.expired(storedHash),
-			'should return false when expiry is default.'
-		)
-		t.end()
-	})
+test('expired with default expiry', t => {
+	t.plan(1)
+	fooHash.then(storedHash =>
+		t.equal(pw.expired(storedHash), false, 'is expired')
+	)
 })
 
-test('expired with short expiry', t => {
-	const pass = 'foo'
-
-	pw.hash(pass).then(storedHash => {
-		t.notOk(
-			pw.expired(storedHash, 2),
-			'should return false when expiry is default.'
-		)
-		t.end()
-	})
+test('expired with custom expiry', t => {
+	t.plan(1)
+	fooHash.then(storedHash =>
+		t.equal(pw.expired(storedHash, 2), false, 'is expired')
+	)
 })
 
 test('expired with expiry in the past', t => {
-	const pass = 'foo'
-
-	pw.hash(pass).then(storedHash => {
-		t.ok(
-			pw.expired(storedHash, -2),
-			'should return true when expiry is in the future.'
-		)
-		t.end()
-	})
+	t.plan(1)
+	fooHash.then(storedHash =>
+		t.equal(pw.expired(storedHash, -2), true, 'is expired')
+	)
 })
 
 test('expired with malformed hash', t => {
-	t.throws(
-		function() {
-			pw.expired('bad')
-		},
-		/parse/,
-		'should throw an error'
-	)
-
+	t.throws(() => pw.expired('bad'), /parse/)
 	t.end()
 })
