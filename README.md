@@ -36,19 +36,9 @@ npm install credentials
 ```
 
 ```js
-var pw = require('credentials')()
+var pw = require('credentials')
 
-/*
-Optionally accepts a hash of configuration values. Defaults to:
-
-{
-  keyLength: 66,      // length of salt
-  work: 1,        // relative work load (0.5 for half the work)
-  expiry: 90,       // days, used only for "expired" method
-}
-*/
-
-pw.hash(password)
+pw.hash(password /*[, opts]*/)
 
 // → hash (string)
 
@@ -56,11 +46,38 @@ pw.verify(hash, password)
 
 // → isValid (Boolean)
 
-pw.expired(hash /*[, days]*/)
+pw.expired(hash /*[, days[, opts]]*/)
 
 // → isExpired (Boolean)
 
-pw.configure(otps)
+/*
+`pw.hash` optionally accepts an object literal of configuration values.
+Defaults to:
+
+{
+  keyLength: 64,  // length of salt
+  work: 1,        // relative work load (0.5 for half the work)
+}
+
+`pw.expired` optionally accepts an object literal of configuration values.
+Defaults to:
+
+{
+  work: 1,
+}
+*/
+
+pw.configure({
+  // defaults:
+  keyLength: 64,
+  work: 1,
+  expiry: 90,
+})
+
+/*
+Returns an object literal of functions `{hash, verify, expired}` preconfigured
+with the options.
+*/
 ```
 
 ## Examples
