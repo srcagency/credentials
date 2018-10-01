@@ -1,6 +1,6 @@
 {
 	"name": "credentials",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Secure password hashing and verification",
 	"bin": {
 		"credentials": "bin/cmd.js"
