@@ -4,7 +4,7 @@ const test = require('tape')
 const pw = require('../')()
 
 test('hash', t =>
-	pw.hash('foo', (err, hash) => {
+	pw.hash('foo').then(hash => {
 		t.equal(typeof hash, 'string', 'should produce a hash string.')
 		t.ok(
 			JSON.parse(hash).hash,
@@ -14,16 +14,16 @@ test('hash', t =>
 	}))
 
 test('hash with different passwords', t =>
-	pw.hash('foo', (err, fooHash) =>
-		pw.hash('bar', (err, barHash) => {
+	pw.hash('foo').then(fooHash =>
+		pw.hash('bar').then(barHash => {
 			t.notEqual(fooHash, barHash, 'should produce a different hash.')
 			t.end()
 		})
 	))
 
 test('hash with same passwords', t =>
-	pw.hash('foo', (err, fooHash) =>
-		pw.hash('foo', (err, barHash) => {
+	pw.hash('foo').then(fooHash =>
+		pw.hash('foo').then(barHash => {
 			t.notEqual(fooHash, barHash, 'should produce a different hash.')
 			t.end()
 		})
@@ -31,7 +31,7 @@ test('hash with same passwords', t =>
 
 test('hash with undefined password', t => {
 	try {
-		pw.hash(undefined, err => {
+		pw.hash(undefined).catch(err => {
 			t.ok(err, 'should cause error.')
 			t.end()
 		})
@@ -42,7 +42,7 @@ test('hash with undefined password', t => {
 
 test('hash with empty password', t => {
 	try {
-		pw.hash('', err => {
+		pw.hash('').catch(err => {
 			t.ok(err, 'should cause error.')
 			t.end()
 		})

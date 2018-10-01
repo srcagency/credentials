@@ -7,7 +7,7 @@ test('options', t => {
 	const work = 0.5
 	const keyLength = 12
 
-	pw.hash('foo', (err, hash) => {
+	pw.hash('foo').then(hash => {
 		const defaultIterations = JSON.parse(hash).iterations
 
 		pw.configure({
@@ -15,7 +15,7 @@ test('options', t => {
 			keyLength: keyLength,
 		})
 
-		pw.hash('foo', (err, hash) => {
+		pw.hash('foo').then(hash => {
 			t.equal(
 				JSON.parse(hash).iterations,
 				Math.floor(defaultIterations * work),

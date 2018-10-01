@@ -6,7 +6,7 @@ const pw = require('../')()
 test('expired with valid hash and default expiry', t => {
 	const pass = 'foo'
 
-	pw.hash(pass, (err, storedHash) => {
+	pw.hash(pass).then(storedHash => {
 		t.notOk(
 			pw.expired(storedHash),
 			'should return false when expiry is default.'
@@ -18,7 +18,7 @@ test('expired with valid hash and default expiry', t => {
 test('expired with short expiry', t => {
 	const pass = 'foo'
 
-	pw.hash(pass, (err, storedHash) => {
+	pw.hash(pass).then(storedHash => {
 		t.notOk(
 			pw.expired(storedHash, 2),
 			'should return false when expiry is default.'
@@ -30,7 +30,7 @@ test('expired with short expiry', t => {
 test('expired with expiry in the past', t => {
 	const pass = 'foo'
 
-	pw.hash(pass, (err, storedHash) => {
+	pw.hash(pass).then(storedHash => {
 		t.ok(
 			pw.expired(storedHash, -2),
 			'should return true when expiry is in the future.'

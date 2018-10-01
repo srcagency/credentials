@@ -1,8 +1,7 @@
 'use strict'
 
 const assign = require('object-assign')
-const Promise = require('bluebird')
-const {reject} = Promise
+const {reject} = require('bluebird')
 const hash = require('./hash')
 const verify = require('./verify')
 
@@ -20,35 +19,32 @@ assign(Credentials.prototype, {
 	work: 1,
 	expiry: 90,
 
-	hash: function(password, cb) {
+	hash: function(password) {
 		const hashMethod = this.hashMethod
 		const keyLength = this.keyLength
 		const n = iterations(this.work)
 
-		Promise.try(() => {
-			if (typeof password !== 'string' || password.length === 0)
-				return reject(new Error('Password must be a non-empty string.'))
+		if (typeof password !== 'string' || password.length === 0) {
+			return reject(new Error('Password must be a non-empty string.'))
+		}
 
-			return hash(hashMethod, password, n, keyLength)
-		})
-			.then(JSON.stringify)
-			.asCallback(cb)
+		return hash(hashMethod, password, n, keyLength).then(JSON.stringify)
 	},
 
-	verify: function(hash, input, cb) {
+	verify: function(hash, input) {
 		const stored = parseHash(hash)
 
-		Promise.try(() => {
-			if (typeof input !== 'string' || input.length === 0)
-				return reject(
-					new Error('Input password must be a non-empty string.')
-				)
+		if (typeof input !== 'string' || input.length === 0) {
+			return reject(
+				new Error('Input password must be a non-empty string.')
+			)
+		}
 
-			if (!stored.hashMethod)
-				return reject(new Error("Couldn't parse stored hash."))
+		if (!stored.hashMethod) {
+			return reject(new Error("Couldn't parse stored hash."))
+		}
 
-			return verify(stored, input)
-		}).asCallback(cb)
+		return verify(stored, input)
 	},
 
 	expired: function(hash, days) {

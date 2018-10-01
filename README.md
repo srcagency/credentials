@@ -3,11 +3,11 @@
 This was initially a fork of @ericelliott's great effort at
 https://github.com/ericelliott/credential with the main differences being:
 
-- API supports callbacks _and_ promises
+- Promises based API
 - Each instance is separate - no globals or leak to other instances
 - No tooling cruft
 
-API (after instantiation) and produced hashes are 100% compatible.
+Produced hashes are compatible.
 
 A merge is not possible due to differences discovered in
 https://github.com/ericelliott/credential/issues/25
@@ -49,18 +49,15 @@ Optionally accepts a hash of configuration values. Defaults to:
 
 pw.hash(password)
 
-// callback( err, hash )
+// → hash (string)
 
 pw.verify(hash, password)
 
-// callback( err, isValid )
+// → isValid (Boolean)
 
 pw.expired(hash /*[, days]*/)
 
-/*
-true/false if hash was created before/after "days" (defaults to configuration
-value "expiry")
-*/
+// → isExpired (Boolean)
 
 pw.configure(otps)
 ```
