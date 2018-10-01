@@ -2,7 +2,7 @@
 'use strict'
 
 const program = require('commander')
-const credentials = require('../')()
+const pw = require('../')
 
 let stdin = ''
 
@@ -17,16 +17,15 @@ program
 		Number
 	)
 	.option('-k --key-length <key-length>', 'length of salt', Number)
-	.action((password, {keyLength, hashMethod, work}) => {
-		credentials.configure({keyLength, hashMethod, work})
-		credentials.hash(stdin || password).then(console.log, console.error)
+	.action((password, opts) => {
+		pw.hash(stdin || password, opts).then(console.log, console.error)
 	})
 
 program
 	.command('verify [hash] <password>')
 	.description('Verify password')
 	.action((hash, password) =>
-		credentials.verify(stdin || hash, password).then(result => {
+		pw.verify(stdin || hash, password).then(result => {
 			console.log(result ? 'Verified' : 'Invalid')
 			process.exit(result ? 0 : 1)
 		}, console.error)

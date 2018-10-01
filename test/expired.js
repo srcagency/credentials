@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('tape')
-const pw = require('../')()
+const pw = require('../')
 
 const fooHash = pw.hash('foo')
 

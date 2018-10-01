@@ -2,7 +2,7 @@
 
 const {join} = require('bluebird')
 const test = require('tape')
-const pw = require('../')()
+const pw = require('../')
 
 test('hash', t => {
 	t.plan(1)

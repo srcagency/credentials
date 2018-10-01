@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('tape')
-const pw = require('../')()
+const pw = require('../')
 
 test('verify with right pw', t => {
 	const pass = 'foo'

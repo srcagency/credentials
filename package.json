@@ -2,14 +2,12 @@
 	"name": "credentials",
 	"version": "2.0.0",
 	"description": "Secure password hashing and verification",
-	"main": "src",
 	"bin": {
 		"credentials": "bin/cmd.js"
 	},
 	"dependencies": {
 		"bluebird": "^3.5.2",
-		"commander": "^2.18.0",
-		"object-assign": "^4.1.1"
+		"commander": "^2.18.0"
 	},
 	"devDependencies": {
 		"prettier": "^1.14.3",
