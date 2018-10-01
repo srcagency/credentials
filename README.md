@@ -1,31 +1,17 @@
 # Credentials
 
-This was initially a fork of @ericelliott's great effort at
-https://github.com/ericelliott/credential with the main differences being:
+Secure password hashing and verification with core Node.js modules.
 
-- Promises based API
-- There's a [CLI](#cli)
-- Each instance is separate - no globals or leak to other instances
-- No tooling cruft
+- Time consuming hashing (PBKDF2 with SHA-512) to combat brute force
+- Per password salt to combat rainbow tables
+- Incrementing work/complexity to combat future computing advances
+- Constant time equality check to combat timing attacks
 
-Produced hashes are compatible.
+```js
+const {hash, verify} = require('credentials')
 
-A merge is not possible due to differences discovered in
-https://github.com/ericelliott/credential/issues/25
-
-## About
-
-Easy password hashing and verification in Node. Protects against brute force,
-rainbow tables, and timing attacks.
-
-Employs cryptographically secure, per password salts to prevent rainbow table
-attacks. Key stretching is used to make brute force attacks impractical. A
-constant time verification check prevents variable response time attacks.
-
-_<-- from original README_
-
-This package is an attempt to create a reference point for secure password
-storage and avoid duplicate effort.
+verify(hash('password'), 'password') // → true
+```
 
 If you find a security flaw in this code, please contact security@src.agency.
 
@@ -36,48 +22,41 @@ npm install credentials
 ```
 
 ```js
-var pw = require('credentials')
+const {hash, verify, expired} = require('credentials')
 
-pw.hash(password /*[, opts]*/)
+hash(password /*[, opts]*/) // → hashed (string), ready for storage
+verify(hashed, password) // → isValid (Boolean)
+expired(hashed /*[, days[, opts]]*/) // → isExpired (Boolean)
+```
 
-// → hash (string)
+`hash` optionally accepts an object literal of configuration values. Defaults
+to:
 
-pw.verify(hash, password)
-
-// → isValid (Boolean)
-
-pw.expired(hash /*[, days[, opts]]*/)
-
-// → isExpired (Boolean)
-
-/*
-`pw.hash` optionally accepts an object literal of configuration values.
-Defaults to:
-
+```js
 {
   keyLength: 64,  // length of salt
   work: 1,        // relative work load (0.5 for half the work)
 }
+```
 
-`pw.expired` optionally accepts an object literal of configuration values.
+`expired` optionally accepts an object literal of configuration values.
 Defaults to:
 
+```js
 {
   work: 1,
 }
-*/
+```
 
-pw.configure({
+Preconfigured functions:
+
+```js
+const {hash, verify, expired} = require('credentials').configure({
   // defaults:
   keyLength: 64,
   work: 1,
   expiry: 90,
 })
-
-/*
-Returns an object literal of functions `{hash, verify, expired}` preconfigured
-with the options.
-*/
 ```
 
 ## Examples
@@ -85,25 +64,21 @@ with the options.
 ### Sign up
 
 ```js
-var pw = require('credentials')()
+const {hash} = require('credentials')
 
-pw.hash(userInput).then(function(hash) {
-  saveHash(hash)
-})
+hash(userInput).then(hashed => saveHash(hashed))
 ```
 
 ### Sign in
 
 ```js
-var pw = require('credentials'),
+const {verify} = require('credentials')
 
-pw.verify(savedHash, userInput)
-  .then(function( isValid ){
-    if (!isValid)
-      throw new CredentialsError('Bad credentials');
+verify(hashed, userInput).then(isValid => {
+  if (!isValid) throw new Error('Bad credentials')
 
-    // allow access
-  });
+  // allow access
+})
 ```
 
 ## CLI
@@ -155,22 +130,17 @@ The `expiry` configuration value is used entirely by the `expired` method.
 
 The main purpose of this concept is to tell the user to update their password.
 
-## Work and iterations
+# Inspiration
 
-One problem with password hashing is that any hash can be broken given enough
-computational time. It is simply a matter of trying all possibilities until the
-right one is found.
+This was initially a fork of @ericelliott's great effort at
+https://github.com/ericelliott/credential with the main differences being:
 
-To mitigate this, algorithms with significant work load is chosen and then
-applied multiple times (iteration count).
+- Better default values (SHA-512 and a key length of 64 bytes)
+- Promises
+- There's a [CLI](#cli)
+- Each instance is separate - no globals or leak to other instances
 
-It is hard to determine the correct work load. A general rule of thumb is: **use
-as much time (work) as possible, without annoying your users**. This could be
-something like 800ms.
+Produced hashes are compatible.
 
-With computers getting ever more powerful, you can imagine the work load should
-increase over time. This is handled automatically in Credentials with an
-algorithm of: `2^(msSinceY2k / 2*msPerYear)`.
-
-This is also a good reason to force users to change passwords once in a while as
-the new password will be hashed slightly stronger.
+A merge was not possible due to differences discovered in
+https://github.com/ericelliott/credential/issues/25
