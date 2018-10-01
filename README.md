@@ -4,7 +4,7 @@ This was initially a fork of @ericelliott's great effort at
 https://github.com/ericelliott/credential with the main differences being:
 
 - Promises based API
-- There's a [CLI](#CLI)
+- There's a [CLI](#cli)
 - Each instance is separate - no globals or leak to other instances
 - No tooling cruft
 
