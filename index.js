@@ -12,7 +12,7 @@ const msPerYear = 366 * msPerDay
 const y2k = new Date(2000, 0, 1)
 
 const dOpts = {
-	keyLength: 66,
+	keyLength: 64,
 	work: 1,
 	expiry: 90,
 }
@@ -41,12 +41,12 @@ function hash(password, opts) {
 
 	const salt = randomBytes(keyLength)
 	const hash = join(salt, salt =>
-		pbkdf2(password, salt, iterations, keyLength, 'SHA1')
+		pbkdf2(password, salt, iterations, keyLength, 'sha512')
 	)
 
 	return join(salt, hash, (salt, hash) =>
 		JSON.stringify({
-			hashMethod: 'pbkdf2',
+			hashMethod: 'pbkdf2-sha512',
 			salt: salt.toString('base64'),
 			hash: hash.toString('base64'),
 			keyLength,
@@ -62,9 +62,16 @@ function verify(stored, input) {
 		return bail('Input password must be a non-empty string.')
 	}
 	if (!hashMethod) return bail("Couldn't parse stored hash.")
-	if (hashMethod !== 'pbkdf2') return bail('Unsupported hashing method')
 
-	const hashB = pbkdf2(input, salt, iterations, keyLength, 'SHA1')
+	const dfn = hashMethod.slice(0, 6)
+	const hfn = hashMethod.slice(7) || 'sha1'
+
+	if (dfn !== 'pbkdf2') return bail('Unsupported key derivation function')
+	if (!['sha1', 'sha512'].includes(hfn)) {
+		return bail('Unsupported hash function')
+	}
+
+	const hashB = pbkdf2(input, salt, iterations, keyLength, hfn)
 
 	return join(hashB, hash, timingSafeEqual)
 }
