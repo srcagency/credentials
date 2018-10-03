@@ -14,7 +14,8 @@
 		"tape": "^4.9.1"
 	},
 	"scripts": {
-		"test": "node test"
+		"test": "node test",
+		"format": "prettier --write ./*"
 	},
 	"repository": "srcagency/credentials",
 	"keywords": [
@@ -46,6 +47,7 @@
 			{
 				"files": "*.md",
 				"options": {
+					"useTabs": false,
 					"tabWidth": 2
 				}
 			}
