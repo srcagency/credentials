@@ -1,56 +1,38 @@
 {
-	"name": "credentials",
-	"version": "3.0.2",
-	"description": "Secure password hashing and verification",
-	"bin": {
-		"credentials": "bin/cmd.js"
-	},
-	"dependencies": {
-		"commander": "^2.18.0"
-	},
-	"devDependencies": {
-		"bluebird": "^3.5.2",
-		"prettier": "^1.14.3",
-		"tape": "^4.9.1"
-	},
-	"scripts": {
-		"test": "node test",
-		"format": "prettier --write ./*"
-	},
-	"repository": "srcagency/credentials",
-	"keywords": [
-		"password",
-		"passwords",
-		"hash",
-		"auth",
-		"authorization",
-		"authentication",
-		"security",
-		"login",
-		"sign in",
-		"salt",
-		"rainbow",
-		"brute",
-		"stretching",
-		"PBKDF2"
-	],
-	"author": "Thomas Jensen <thomas@src.agency> (http://src.agency)",
-	"license": "MIT",
-	"prettier": {
-		"semi": false,
-		"singleQuote": true,
-		"useTabs": true,
-		"bracketSpacing": false,
-		"trailingComma": "es5",
-		"tabWidth": 4,
-		"overrides": [
-			{
-				"files": "*.md",
-				"options": {
-					"useTabs": false,
-					"tabWidth": 2
-				}
-			}
-		]
-	}
+    "name": "credentials",
+    "version": "3.0.2",
+    "description": "Secure password hashing and verification",
+    "bin": {
+        "credentials": "bin/cmd.js"
+    },
+    "dependencies": {
+        "commander": "^2.18.0"
+    },
+    "devDependencies": {
+        "prettier": "2.4.1",
+        "tape": "^4.9.1"
+    },
+    "scripts": {
+        "test": "node test",
+        "format": "prettier --write ./*"
+    },
+    "repository": "srcagency/credentials",
+    "keywords": [
+        "password",
+        "passwords",
+        "hash",
+        "auth",
+        "authorization",
+        "authentication",
+        "security",
+        "login",
+        "sign in",
+        "salt",
+        "rainbow",
+        "brute",
+        "stretching",
+        "PBKDF2"
+    ],
+    "author": "Thomas Jensen <thomas@src.agency> (http://src.agency)",
+    "license": "MIT"
 }

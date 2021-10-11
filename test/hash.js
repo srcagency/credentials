@@ -1,33 +1,36 @@
-'use strict'
+'use strict';
 
-const {join} = require('bluebird')
-const test = require('tape')
-const pw = require('../')
+const test = require('tape');
+const pw = require('../');
 
-test('hash', t => {
-	t.plan(1)
-	pw.hash('foo').then(hash => t.equal(typeof hash, 'string', 'type'))
-})
+test('hash', (t) => {
+    t.plan(1);
+    pw.hash('foo').then((hash) => t.equal(typeof hash, 'string', 'type'));
+});
 
-test('hash with different passwords', t => {
-	t.plan(1)
-	join(pw.hash('foo'), pw.hash('bar'), (a, b) =>
-		t.ok(a !== b, 'is not equal')
-	)
-})
+test('hash with different passwords', (t) => {
+    t.plan(1);
 
-test('hash with same passwords', t => {
-	const pass = 'foo'
-	t.plan(1)
-	join(pw.hash(pass), pw.hash(pass), (a, b) => t.ok(a !== b, 'is not equal'))
-})
+    Promise.all([pw.hash('foo'), pw.hash('bar')]).then(([a, b]) => {
+        t.ok(a !== b, 'is not equal');
+    });
+});
 
-test('hash with undefined password', t => {
-	t.plan(1)
-	pw.hash(undefined).catch(err => t.ok(err))
-})
+test('hash with same passwords', (t) => {
+    const pass = 'foo';
+    t.plan(1);
 
-test('hash with empty password', t => {
-	t.plan(1)
-	pw.hash('').catch(err => t.ok(err))
-})
+    Promise.all([pw.hash(pass), pw.hash(pass)]).then(([a, b]) => {
+        t.ok(a !== b, 'is not equal');
+    });
+});
+
+test('hash with undefined password', (t) => {
+    t.plan(1);
+    pw.hash(undefined).catch((err) => t.ok(err));
+});
+
+test('hash with empty password', (t) => {
+    t.plan(1);
+    pw.hash('').catch((err) => t.ok(err));
+});
