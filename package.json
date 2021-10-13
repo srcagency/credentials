@@ -1,5 +1,5 @@
 {
-    "name": "credentials",
+    "name": "@idearium/credentials",
     "version": "1.0.0",
     "description": "Secure password hashing and verification",
     "bin": {
@@ -16,7 +16,7 @@
         "test": "node test",
         "format": "prettier --write ./*"
     },
-    "repository": "srcagency/credentials",
+    "repository": "idearium/credentials",
     "keywords": [
         "password",
         "passwords",
@@ -33,6 +33,6 @@
         "stretching",
         "PBKDF2"
     ],
-    "author": "Thomas Jensen <thomas@src.agency> (http://src.agency)",
+    "author": "Allan Chau <allan@idearium.io>",
     "license": "MIT"
 }
